@@ -1,6 +1,7 @@
 package oauth_test
 
 import (
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -17,6 +18,10 @@ func TestNewClient(t *testing.T) {
 		RefreshToken: "somerefreshtoken",
 	}
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body, _ := ioutil.ReadAll(r.Body)
+		assert.Equal(t, "/tokens-endpoint", r.URL.String())
+		assert.Equal(t, "grant_type=password&password=somepassword&scope=read&username=someusername", string(body))
+
 		response := `{
 			"access_token": "someaccesstoken",
 			"expires_in": 36000,
