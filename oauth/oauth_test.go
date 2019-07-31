@@ -33,6 +33,7 @@ func TestNewClient(t *testing.T) {
 	client, err := oauth.NewClient(server.URL+"/tokens-endpoint", "someclientid", "someclientsecret", "someusername", "somepassword")
 
 	assert.Nil(t, err)
+	assert.NotNil(t, client.HTTPClient)
 	assert.Equal(t, expectedToken.AccessToken, client.Token.AccessToken)
 	assert.Equal(t, expectedToken.RefreshToken, client.Token.RefreshToken)
 }
