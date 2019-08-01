@@ -22,6 +22,7 @@ type Config struct {
 	ClientSecret string
 	Username     string
 	Password     string
+	RefreshToken string
 }
 
 // NewClient create a new OAuth Client using password based authentication.
@@ -36,10 +37,24 @@ func NewClient(config Config) (*Client, error) {
 		},
 	}
 
-	token, err := conf.PasswordCredentialsToken(ctx, config.Username, config.Password)
-	if err != nil {
-		return nil, err
+	var token *oauth2.Token
+	var err error
+
+	if config.Password != "" {
+		token, err = conf.PasswordCredentialsToken(ctx, config.Username, config.Password)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		previousToken := &oauth2.Token{
+			RefreshToken: config.RefreshToken,
+		}
+		token, err = conf.TokenSource(ctx, previousToken).Token()
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	httpClient := conf.Client(ctx, token)
 
 	return &Client{
