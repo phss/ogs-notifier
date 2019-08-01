@@ -11,7 +11,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func TestNewClient_passwordBased(t *testing.T) {
+func PasswordCredentialsClient(t *testing.T) {
 	expectedToken := oauth2.Token{
 		TokenType:    "Bearer",
 		AccessToken:  "someaccesstoken",
@@ -39,15 +39,29 @@ func TestNewClient_passwordBased(t *testing.T) {
 		TokenURL:     server.URL + "/tokens-endpoint",
 		ClientID:     "someclientid",
 		ClientSecret: "someclientsecret",
-		Username:     "someusername",
-		Password:     "somepassword",
 	}
-	client, err := oauth.NewClient(config)
+	client, err := oauth.PasswordCredentialsClient(config, "someusername", "somepassword")
 
 	assert.Nil(t, err)
 	assert.NotNil(t, client.HTTPClient)
 	assert.Equal(t, expectedToken.AccessToken, client.Token.AccessToken)
 	assert.Equal(t, expectedToken.RefreshToken, client.Token.RefreshToken)
+}
+
+func PasswordCredentialsClient_handleFailure(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+	}))
+	defer server.Close()
+
+	config := oauth.Config{
+		TokenURL:     server.URL + "/tokens-endpoint",
+		ClientID:     "someclientid",
+		ClientSecret: "someclientsecret",
+	}
+	_, err := oauth.PasswordCredentialsClient(config, "someusername", "somepassword")
+
+	assert.Error(t, err)
 }
 
 func TestNewClient_refreshTokenBased(t *testing.T) {
@@ -87,22 +101,4 @@ func TestNewClient_refreshTokenBased(t *testing.T) {
 	assert.NotNil(t, client.HTTPClient)
 	assert.Equal(t, expectedToken.AccessToken, client.Token.AccessToken)
 	assert.Equal(t, expectedToken.RefreshToken, client.Token.RefreshToken)
-}
-
-func TestNewClient_handleFailure(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusInternalServerError)
-	}))
-	defer server.Close()
-
-	config := oauth.Config{
-		TokenURL:     server.URL + "/tokens-endpoint",
-		ClientID:     "someclientid",
-		ClientSecret: "someclientsecret",
-		Username:     "someusername",
-		Password:     "somepassword",
-	}
-	_, err := oauth.NewClient(config)
-
-	assert.Error(t, err)
 }
