@@ -35,7 +35,14 @@ func TestNewClient(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client, err := oauth.NewClient(server.URL+"/tokens-endpoint", "someclientid", "someclientsecret", "someusername", "somepassword")
+	config := oauth.Config{
+		TokenURL:     server.URL + "/tokens-endpoint",
+		ClientID:     "someclientid",
+		ClientSecret: "someclientsecret",
+		Username:     "someusername",
+		Password:     "somepassword",
+	}
+	client, err := oauth.NewClient(config)
 
 	assert.Nil(t, err)
 	assert.NotNil(t, client.HTTPClient)
@@ -49,7 +56,14 @@ func TestNewClient_handleFailure(t *testing.T) {
 	}))
 	defer server.Close()
 
-	_, err := oauth.NewClient(server.URL+"/tokens-endpoint", "someclientid", "someclientsecret", "someusername", "somepassword")
+	config := oauth.Config{
+		TokenURL:     server.URL + "/tokens-endpoint",
+		ClientID:     "someclientid",
+		ClientSecret: "someclientsecret",
+		Username:     "someusername",
+		Password:     "somepassword",
+	}
+	_, err := oauth.NewClient(config)
 
 	assert.Error(t, err)
 }
