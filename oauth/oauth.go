@@ -27,31 +27,35 @@ type Config struct {
 
 // PasswordCredentialsClient create a new OAuth Client using password based authentication.
 func PasswordCredentialsClient(config Config, username string, password string) (*Client, error) {
-	passwordConfig := Config{
-		TokenURL:     config.TokenURL,
-		ClientID:     config.ClientID,
-		ClientSecret: config.ClientSecret,
-		Username:     username,
-		Password:     password,
+	ctx := context.Background()
+	conf := oauthConfig(config)
+
+	token, err := conf.PasswordCredentialsToken(ctx, username, password)
+	if err != nil {
+		return nil, err
 	}
-	return NewClient(passwordConfig)
+
+	return newClient(ctx, conf, token), nil
 }
 
 // RefreshTokenClient create a new OAuth Client using refresh token based authentication.
 func RefreshTokenClient(config Config, refreshToken string) (*Client, error) {
-	passwordConfig := Config{
-		TokenURL:     config.TokenURL,
-		ClientID:     config.ClientID,
-		ClientSecret: config.ClientSecret,
+	ctx := context.Background()
+	conf := oauthConfig(config)
+
+	previousToken := &oauth2.Token{
 		RefreshToken: refreshToken,
 	}
-	return NewClient(passwordConfig)
+	token, err := conf.TokenSource(ctx, previousToken).Token()
+	if err != nil {
+		return nil, err
+	}
+
+	return newClient(ctx, conf, token), nil
 }
 
-// NewClient create a new OAuth Client using password based authentication.
-func NewClient(config Config) (*Client, error) {
-	ctx := context.Background()
-	conf := &oauth2.Config{
+func oauthConfig(config Config) *oauth2.Config {
+	return &oauth2.Config{
 		ClientID:     config.ClientID,
 		ClientSecret: config.ClientSecret,
 		Scopes:       []string{"read"},
@@ -59,29 +63,12 @@ func NewClient(config Config) (*Client, error) {
 			TokenURL: config.TokenURL,
 		},
 	}
+}
 
-	var token *oauth2.Token
-	var err error
-
-	if config.Password != "" {
-		token, err = conf.PasswordCredentialsToken(ctx, config.Username, config.Password)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		previousToken := &oauth2.Token{
-			RefreshToken: config.RefreshToken,
-		}
-		token, err = conf.TokenSource(ctx, previousToken).Token()
-		if err != nil {
-			return nil, err
-		}
-	}
-
+func newClient(ctx context.Context, conf *oauth2.Config, token *oauth2.Token) *Client {
 	httpClient := conf.Client(ctx, token)
-
 	return &Client{
 		HTTPClient: httpClient,
 		Token:      token,
-	}, nil
+	}
 }
