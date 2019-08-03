@@ -100,3 +100,19 @@ func TestRefreshTokenClient(t *testing.T) {
 	assert.Equal(t, expectedToken.AccessToken, client.Token.AccessToken)
 	assert.Equal(t, expectedToken.RefreshToken, client.Token.RefreshToken)
 }
+
+func TestRefreshtokenClient_handleFailure(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+	}))
+	defer server.Close()
+
+	config := oauth.Config{
+		TokenURL:     server.URL + "/tokens-endpoint",
+		ClientID:     "someclientid",
+		ClientSecret: "someclientsecret",
+	}
+	_, err := oauth.RefreshTokenClient(config, "sometoken")
+
+	assert.Error(t, err)
+}
