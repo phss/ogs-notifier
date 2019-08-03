@@ -37,6 +37,17 @@ func PasswordCredentialsClient(config Config, username string, password string) 
 	return NewClient(passwordConfig)
 }
 
+// RefreshTokenClient create a new OAuth Client using refresh token based authentication.
+func RefreshTokenClient(config Config, refreshToken string) (*Client, error) {
+	passwordConfig := Config{
+		TokenURL:     config.TokenURL,
+		ClientID:     config.ClientID,
+		ClientSecret: config.ClientSecret,
+		RefreshToken: refreshToken,
+	}
+	return NewClient(passwordConfig)
+}
+
 // NewClient create a new OAuth Client using password based authentication.
 func NewClient(config Config) (*Client, error) {
 	ctx := context.Background()

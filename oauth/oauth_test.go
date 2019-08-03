@@ -11,7 +11,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func PasswordCredentialsClient(t *testing.T) {
+func TestPasswordCredentialsClient(t *testing.T) {
 	expectedToken := oauth2.Token{
 		TokenType:    "Bearer",
 		AccessToken:  "someaccesstoken",
@@ -48,7 +48,7 @@ func PasswordCredentialsClient(t *testing.T) {
 	assert.Equal(t, expectedToken.RefreshToken, client.Token.RefreshToken)
 }
 
-func PasswordCredentialsClient_handleFailure(t *testing.T) {
+func TestPasswordCredentialsClient_handleFailure(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 	}))
@@ -64,7 +64,7 @@ func PasswordCredentialsClient_handleFailure(t *testing.T) {
 	assert.Error(t, err)
 }
 
-func TestNewClient_refreshTokenBased(t *testing.T) {
+func TestRefreshTokenClient(t *testing.T) {
 	expectedToken := oauth2.Token{
 		TokenType:    "Bearer",
 		AccessToken:  "someaccesstoken",
@@ -92,10 +92,8 @@ func TestNewClient_refreshTokenBased(t *testing.T) {
 		TokenURL:     server.URL + "/tokens-endpoint",
 		ClientID:     "someclientid",
 		ClientSecret: "someclientsecret",
-		Username:     "someusername",
-		RefreshToken: "sometoken",
 	}
-	client, err := oauth.NewClient(config)
+	client, err := oauth.RefreshTokenClient(config, "sometoken")
 
 	assert.Nil(t, err)
 	assert.NotNil(t, client.HTTPClient)
