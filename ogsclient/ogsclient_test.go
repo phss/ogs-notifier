@@ -8,9 +8,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNewClient(t *testing.T) {
+func TestNewClient_userDetails(t *testing.T) {
 	httpClient := &http.Client{}
 	ogsClient := ogsclient.NewClient(httpClient, "somewhere")
 
-	assert.NotNil(t, ogsClient.Me)
+	_, err := ogsClient.Me()
+
+	assert.NotNil(t, err)
 }
