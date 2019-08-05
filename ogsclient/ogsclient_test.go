@@ -12,5 +12,5 @@ func TestNewClient(t *testing.T) {
 	httpClient := &http.Client{}
 	ogsClient := ogsclient.NewClient(httpClient, "somewhere")
 
-	assert.Equal(t, httpClient, ogsClient.HttpClient)
+	assert.NotNil(t, ogsClient.Me)
 }
