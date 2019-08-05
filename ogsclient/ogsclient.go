@@ -1,37 +1,30 @@
 package ogsclient
 
 import (
-	"encoding/json"
 	"net/http"
+
+	"github.com/dghubble/sling"
 )
 
 // Client is an OGS client for making API requests.
 type Client struct {
-	httpClient         *http.Client
-	ogsAPIBaseEndpoint string
+	sling *sling.Sling
 }
 
 // NewClient returns a new OGS client.
 func NewClient(httpClient *http.Client, ogsAPIBaseEndpoint string) *Client {
+	base := sling.New().Client(httpClient).Base(ogsAPIBaseEndpoint)
 	return &Client{
-		httpClient:         httpClient,
-		ogsAPIBaseEndpoint: ogsAPIBaseEndpoint,
+		sling: base,
 	}
 }
 
 // Me makes a request to the /me resource endpoint.
 func (client *Client) Me() (*MeResource, error) {
-	resp, err := client.httpClient.Get(client.ogsAPIBaseEndpoint + "/me")
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
 	me := new(MeResource)
-	err = json.NewDecoder(resp.Body).Decode(me)
+	_, err := client.sling.Get("me").ReceiveSuccess(me)
 	if err != nil {
 		return nil, err
 	}
-
 	return me, nil
 }
