@@ -1,16 +1,6 @@
 package ogsclient
 
-import "net/http"
-
-// MeResource represents the authenticated user.
+// MeResource represents an authenticated user resource representation
 type MeResource struct {
-	httpClient        *http.Client
-	ogsAPIEndpointURL string
-}
-
-func newMeResource(httpClient *http.Client, ogsAPIBaseEndpoint string) *MeResource {
-	return &MeResource{
-		httpClient:        httpClient,
-		ogsAPIEndpointURL: ogsAPIBaseEndpoint + "/me",
-	}
+	ID int `json:"id"`
 }

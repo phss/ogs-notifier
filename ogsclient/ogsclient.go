@@ -1,7 +1,7 @@
 package ogsclient
 
 import (
-	"errors"
+	"encoding/json"
 	"net/http"
 )
 
@@ -21,5 +21,17 @@ func NewClient(httpClient *http.Client, ogsAPIBaseEndpoint string) *Client {
 
 // Me makes a request to the /me resource endpoint.
 func (client *Client) Me() (*MeResource, error) {
-	return nil, errors.New("not implemented")
+	resp, err := client.httpClient.Get(client.ogsAPIBaseEndpoint + "/me")
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	me := new(MeResource)
+	err = json.NewDecoder(resp.Body).Decode(me)
+	if err != nil {
+		return nil, err
+	}
+
+	return me, nil
 }
