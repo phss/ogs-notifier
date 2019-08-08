@@ -41,12 +41,17 @@ func TestNewClient_userDetails(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(response))
 	}))
-
+	expectedUser := &ogsclient.MeResource{
+		ID:       12345,
+		Username: "someuser",
+		Rating:   948.565,
+		Ranking:  18,
+	}
 	ogsClient := ogsclient.NewClient(httpClient, server.URL)
 	user, err := ogsClient.Me()
 
 	assert.Nil(t, err)
-	assert.Equal(t, 12345, user.ID)
+	assert.Equal(t, expectedUser, user)
 }
 
 func TestNewClient_userDetailsFailure(t *testing.T) {
