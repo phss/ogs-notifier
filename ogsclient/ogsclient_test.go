@@ -48,3 +48,12 @@ func TestNewClient_userDetails(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, 12345, user.ID)
 }
+
+func TestNewClient_badUrl(t *testing.T) {
+	httpClient := &http.Client{}
+
+	ogsClient := ogsclient.NewClient(httpClient, "badurl")
+	_, err := ogsClient.Me()
+
+	assert.Error(t, err)
+}
