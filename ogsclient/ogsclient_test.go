@@ -49,6 +49,23 @@ func TestNewClient_userDetails(t *testing.T) {
 	assert.Equal(t, 12345, user.ID)
 }
 
+func TestNewClient_userDetailsFailure(t *testing.T) {
+	httpClient := &http.Client{}
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		response := `{
+			"detail": "Something went wrong"
+		}`
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(response))
+	}))
+
+	ogsClient := ogsclient.NewClient(httpClient, server.URL)
+	_, err := ogsClient.Me()
+
+	assert.EqualError(t, err, "Something went wrong")
+}
+
 func TestNewClient_badUrl(t *testing.T) {
 	httpClient := &http.Client{}
 
