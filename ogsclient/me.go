@@ -2,7 +2,7 @@ package ogsclient
 
 import "fmt"
 
-// MeResource represents an authenticated user resource representation
+// MeResource represents an authenticated user resource with links to further actions
 type MeResource struct {
 	ID       int     `json:"id"`
 	Username string  `json:"username"`

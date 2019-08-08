@@ -6,7 +6,7 @@ import (
 	"github.com/dghubble/sling"
 )
 
-// Client is an OGS client for making API requests.
+// Client is an OGS client for making OGS API requests.
 type Client struct {
 	sling *sling.Sling
 }
@@ -19,7 +19,7 @@ func NewClient(httpClient *http.Client, ogsAPIBaseEndpoint string) *Client {
 	}
 }
 
-// Me makes a request to the /me resource endpoint.
+// Me fetches the /me resource endpoint, which represents the authenticated user.
 func (client *Client) Me() (*MeResource, error) {
 	me := new(MeResource)
 	apiError := new(ogsAPIError)
