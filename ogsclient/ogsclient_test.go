@@ -42,10 +42,11 @@ func TestNewClient_userDetails(t *testing.T) {
 		w.Write([]byte(response))
 	}))
 	expectedUser := &ogsclient.MeResource{
-		ID:       12345,
-		Username: "someuser",
-		Rating:   948.565,
-		Ranking:  18,
+		ID:        12345,
+		Username:  "someuser",
+		Rating:    948.565,
+		Ranking:   18,
+		GamesPath: "/api/v1/megames",
 	}
 	ogsClient := ogsclient.NewClient(httpClient, server.URL)
 	user, err := ogsClient.Me()

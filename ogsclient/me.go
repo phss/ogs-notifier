@@ -4,10 +4,11 @@ import "fmt"
 
 // MeResource represents an authenticated user resource with links to further actions
 type MeResource struct {
-	ID       int     `json:"id"`
-	Username string  `json:"username"`
-	Rating   float32 `json:"rating"`
-	Ranking  int     `json:"ranking"`
+	ID        int     `json:"id"`
+	Username  string  `json:"username"`
+	Rating    float32 `json:"rating"`
+	Ranking   int     `json:"ranking"`
+	GamesPath string  `json:"games"`
 }
 
 // DisplayRanking converts Ranking into the usual Kyu/Dan ranking.
