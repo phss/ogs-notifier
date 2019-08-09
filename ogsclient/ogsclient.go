@@ -22,6 +22,7 @@ func NewClient(httpClient *http.Client, ogsAPIBaseEndpoint string) *Client {
 // Me fetches the /me resource endpoint, which represents the authenticated user.
 func (client *Client) Me() (*MeResource, error) {
 	me := new(MeResource)
+	me.sling = client.sling
 	apiError := new(ogsAPIError)
 	_, err := client.sling.Get("me").Receive(me, apiError)
 	return me, handleErrors(err, apiError)

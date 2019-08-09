@@ -52,7 +52,11 @@ func TestNewClient_userDetails(t *testing.T) {
 	user, err := ogsClient.Me()
 
 	assert.Nil(t, err)
-	assert.Equal(t, expectedUser, user)
+	assert.Equal(t, expectedUser.ID, user.ID)
+	assert.Equal(t, expectedUser.Username, user.Username)
+	assert.Equal(t, expectedUser.Rating, user.Rating)
+	assert.Equal(t, expectedUser.Ranking, user.Ranking)
+	assert.Equal(t, expectedUser.GamesPath, user.GamesPath)
 }
 
 func TestNewClient_userDetailsFailure(t *testing.T) {

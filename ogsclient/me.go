@@ -1,9 +1,14 @@
 package ogsclient
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/dghubble/sling"
+)
 
 // MeResource represents an authenticated user resource with links to further actions
 type MeResource struct {
+	sling     *sling.Sling
 	ID        int     `json:"id"`
 	Username  string  `json:"username"`
 	Rating    float32 `json:"rating"`
