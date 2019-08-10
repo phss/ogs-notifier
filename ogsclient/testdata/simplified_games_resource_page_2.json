@@ -1,0 +1,97 @@
+{
+    "count": 7,
+    "next": "https://online-go.com/api/v1/megames?page=3",
+    "previous": "https://online-go.com/api/v1/megames",
+    "results": [
+        {
+            "related": {
+                "detail": "/api/v1/games/202"
+            },
+            "players": {
+                "black": {
+                    "id": 34512,
+                    "username": "another",
+                    "ranking": 14
+                },
+                "white": {
+                    "id": 12345,
+                    "username": "someuser",
+                    "ranking": 19
+                }
+            },
+            "id": 202,
+            "name": "Another game",
+            "creator": 12345,
+            "mode": "game",
+            "source": "play",
+            "black": 34512,
+            "white": 12345,
+            "outcome": "Timeout",
+            "black_lost": false,
+            "white_lost": true,
+            "annulled": false,
+            "started": "2019-04-04T18:32:31.029481-04:00",
+            "ended": "2019-04-19T00:44:14.896733-04:00"
+        },
+        {
+            "related": {
+                "detail": "/api/v1/games/203"
+            },
+            "players": {
+                "black": {
+                    "id": 12345,
+                    "username": "someuser",
+                    "ranking": 19
+                },
+                "white": {
+                    "id": 101010,
+                    "username": "somebot",
+                    "ranking": 16
+                }
+            },
+            "id": 203,
+            "name": "Friendly Match",
+            "creator": 12345,
+            "mode": "game",
+            "source": "play",
+            "black": 12345,
+            "white": 101010,
+            "outcome": "9.5 points",
+            "black_lost": false,
+            "white_lost": true,
+            "annulled": false,
+            "started": "2019-07-11T09:54:19.918904-04:00",
+            "ended": "2019-07-11T10:09:11.725619-04:00"
+        },
+        {
+            "related": {
+                "detail": "/api/v1/games/214"
+            },
+            "players": {
+                "black": {
+                    "id": 99999,
+                    "username": "blah",
+                    "ranking": 21
+                },
+                "white": {
+                    "id": 12345,
+                    "username": "someuser",
+                    "ranking": 19
+                }
+            },
+            "id": 214,
+            "name": "blah vs. someuser",
+            "creator": 12345,
+            "mode": "game",
+            "source": "play",
+            "black": 99999,
+            "white": 12345,
+            "outcome": "",
+            "black_lost": true,
+            "white_lost": true,
+            "annulled": false,
+            "started": "2019-08-05T17:13:55.375522-04:00",
+            "ended": null
+        }
+    ]
+}

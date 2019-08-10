@@ -1,0 +1,97 @@
+{
+    "count": 7,
+    "next": "https://online-go.com/api/v1/megames?page=2",
+    "previous": null,
+    "results": [
+        {
+            "related": {
+                "detail": "/api/v1/games/101"
+            },
+            "players": {
+                "black": {
+                    "id": 23456,
+                    "username": "someoneelse",
+                    "ranking": 17
+                },
+                "white": {
+                    "id": 12345,
+                    "username": "someuser",
+                    "ranking": 19
+                }
+            },
+            "id": 101,
+            "name": "Friendly Match",
+            "creator": 96614,
+            "mode": "game",
+            "source": "play",
+            "black": 23456,
+            "white": 12345,
+            "outcome": "Resignation",
+            "black_lost": false,
+            "white_lost": true,
+            "annulled": false,
+            "started": "2016-01-02T11:46:43.715348-05:00",
+            "ended": "2016-01-02T12:07:38.539597-05:00"
+        },
+        {
+            "related": {
+                "detail": "/api/v1/games/102"
+            },
+            "players": {
+                "black": {
+                    "id": 101010,
+                    "username": "somebot",
+                    "ranking": 16
+                },
+                "white": {
+                    "id": 12345,
+                    "username": "someuser",
+                    "ranking": 19
+                }
+            },
+            "id": 102,
+            "name": "Friendly Match",
+            "creator": 12345,
+            "mode": "game",
+            "source": "play",
+            "black": 101010,
+            "white": 12345,
+            "outcome": "33.5 points",
+            "black_lost": false,
+            "white_lost": true,
+            "annulled": false,
+            "started": "2016-01-02T12:14:49.733100-05:00",
+            "ended": "2016-01-02T12:15:38.572124-05:00"
+        },
+        {
+            "related": {
+                "detail": "/api/v1/games/201"
+            },
+            "players": {
+                "black": {
+                    "id": 12345,
+                    "username": "someuser",
+                    "ranking": 19
+                },
+                "white": {
+                    "id": 34512,
+                    "username": "another",
+                    "ranking": 14
+                }
+            },
+            "id": 201,
+            "name": "Game with fancy name",
+            "creator": 34512,
+            "mode": "game",
+            "source": "play",
+            "black": 12345,
+            "white": 34512,
+            "outcome": "Resignation",
+            "black_lost": false,
+            "white_lost": true,
+            "annulled": false,
+            "started": "2018-12-06T09:50:33.499142-05:00",
+            "ended": "2019-02-18T13:29:50.996043-05:00"
+        }
+    ]
+}

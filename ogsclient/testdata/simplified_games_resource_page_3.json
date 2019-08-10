@@ -1,0 +1,38 @@
+{
+    "count": 7,
+    "next": null,
+    "previous": "https://online-go.com/api/v1/megames?page=2",
+    "results": [
+        {
+            "related": {
+                "detail": "/api/v1/games/215"
+            },
+            "players": {
+                "black": {
+                    "id": 12345,
+                    "username": "someuser",
+                    "ranking": 19
+                },
+                "white": {
+                    "id": 99999,
+                    "username": "blah",
+                    "ranking": 21
+
+                }
+            },
+            "id": 215,
+            "name": "blah vs. someuser again",
+            "creator": 12345,
+            "mode": "game",
+            "source": "play",
+            "black": 12345,
+            "white": 99999,
+            "outcome": "",
+            "black_lost": true,
+            "white_lost": true,
+            "annulled": false,
+            "started": "2019-08-07T19:51:35.375522-04:00",
+            "ended": null
+        }
+    ]
+}
