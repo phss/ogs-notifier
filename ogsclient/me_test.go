@@ -48,3 +48,22 @@ func TestMeService_User_badUrl(t *testing.T) {
 
 	assert.Error(t, err)
 }
+
+func TestMeServer_Games(t *testing.T) {
+	server := fakeOgsServer(t)
+	expectedGames := &[]ogsclient.Game{
+		{ID: 101},
+		{ID: 102},
+		{ID: 201},
+		{ID: 202},
+		{ID: 203},
+		{ID: 214},
+		{ID: 215},
+	}
+
+	ogsClient := ogsclient.NewClient(http.DefaultClient, server.URL)
+	games, err := ogsClient.Me.Games()
+
+	assert.Nil(t, err)
+	assert.Equal(t, expectedGames, games)
+}

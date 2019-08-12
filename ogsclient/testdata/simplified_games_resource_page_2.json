@@ -1,7 +1,7 @@
 {
     "count": 7,
-    "next": "https://online-go.com/api/v1/megames?page=3",
-    "previous": "https://online-go.com/api/v1/megames",
+    "next": "{{.ServerUrl}}/me/games?page=3",
+    "previous": "{{.ServerUrl}}/me/games",
     "results": [
         {
             "related": {

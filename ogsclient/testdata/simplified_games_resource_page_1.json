@@ -1,6 +1,6 @@
 {
     "count": 7,
-    "next": "https://online-go.com/api/v1/megames?page=2",
+    "next": "{{.ServerUrl}}/me/games?page=2",
     "previous": null,
     "results": [
         {

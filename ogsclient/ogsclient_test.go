@@ -2,6 +2,7 @@ package ogsclient_test
 
 import (
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -11,21 +12,36 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type templateData struct {
+	ServerUrl string
+}
+
 func fakeOgsServer(t *testing.T) *httptest.Server {
 	mux := http.NewServeMux()
+	server := httptest.NewServer(mux)
+	templateData := templateData{
+		ServerUrl: server.URL,
+	}
 	mux.HandleFunc("/me", func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
 		serveJson(w, filepath.Join("testdata", "user_resource.json"))
 	})
-	mux.HandleFunc("/api/v1/megames", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/me/games", func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
 		page := r.URL.Query().Get("page")
 		if page == "" {
 			page = "1"
 		}
-		serveJson(w, filepath.Join("testdata", fmt.Sprintf("simplified_games_resource_page_%s.json", page)))
+		filename := filepath.Join("testdata", fmt.Sprintf("simplified_games_resource_page_%s.json", page))
+		template, err := template.ParseFiles(filename)
+		if err != nil {
+			panic(t)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		template.Execute(w, templateData)
 	})
-	return httptest.NewServer(mux)
+	return server
 }
 
 func serveJson(w http.ResponseWriter, jsonResponeFilePath string) {
