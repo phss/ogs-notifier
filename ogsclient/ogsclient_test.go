@@ -1,55 +1,39 @@
 package ogsclient_test
 
 import (
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
 	"testing"
 
-	"github.com/phss/ogs-notifier/ogsclient"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNewClient_userDetails(t *testing.T) {
-	server := fakeOgsServer(t)
-	expectedUser := &ogsclient.MeResource{
-		ID:        12345,
-		Username:  "someuser",
-		Rating:    948.565,
-		Ranking:   18,
-		GamesPath: "/api/v1/megames",
+func fakeOgsServer(t *testing.T) *httptest.Server {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/me", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		serveJson(w, filepath.Join("testdata", "user_resource.json"))
+	})
+	mux.HandleFunc("/api/v1/megames", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		page := r.URL.Query().Get("page")
+		if page == "" {
+			page = "1"
+		}
+		serveJson(w, filepath.Join("testdata", fmt.Sprintf("simplified_games_resource_page_%s.json", page)))
+	})
+	return httptest.NewServer(mux)
+}
+
+func serveJson(w http.ResponseWriter, jsonResponeFilePath string) {
+	response, err := ioutil.ReadFile(jsonResponeFilePath)
+	if err != nil {
+		panic(err)
 	}
-	ogsClient := ogsclient.NewClient(http.DefaultClient, server.URL)
-	user, err := ogsClient.Me()
-
-	assert.Nil(t, err)
-	assert.Equal(t, expectedUser.ID, user.ID)
-	assert.Equal(t, expectedUser.Username, user.Username)
-	assert.Equal(t, expectedUser.Rating, user.Rating)
-	assert.Equal(t, expectedUser.Ranking, user.Ranking)
-	assert.Equal(t, expectedUser.GamesPath, user.GamesPath)
-}
-
-func TestNewClient_userDetailsFailure(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		response := `{
-			"detail": "Something went wrong"
-		}`
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(response))
-	}))
-
-	ogsClient := ogsclient.NewClient(http.DefaultClient, server.URL)
-	_, err := ogsClient.Me()
-
-	assert.EqualError(t, err, "Something went wrong")
-}
-
-func TestNewClient_badUrl(t *testing.T) {
-	httpClient := &http.Client{}
-
-	ogsClient := ogsclient.NewClient(httpClient, "badurl")
-	_, err := ogsClient.Me()
-
-	assert.Error(t, err)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(response)
 }
