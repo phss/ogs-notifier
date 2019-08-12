@@ -1,6 +1,7 @@
 package ogsclient_test
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -18,7 +19,11 @@ func fakeOgsServer(t *testing.T) *httptest.Server {
 	})
 	mux.HandleFunc("/api/v1/megames", func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		serveJson(w, filepath.Join("testdata", "simplified_games_resource_page_1.json"))
+		page := r.URL.Query().Get("page")
+		if page == "" {
+			page = "1"
+		}
+		serveJson(w, filepath.Join("testdata", fmt.Sprintf("simplified_games_resource_page_%s.json", page)))
 	})
 	return httptest.NewServer(mux)
 }
