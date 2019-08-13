@@ -67,3 +67,19 @@ func TestMeServer_Games(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, expectedGames, games)
 }
+
+func TestMeServer_Games_apiError(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		response := `{
+			"detail": "Something went wrong"
+		}`
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(response))
+	}))
+
+	ogsClient := ogsclient.NewClient(http.DefaultClient, server.URL)
+	_, err := ogsClient.Me.Games()
+
+	assert.EqualError(t, err, "Something went wrong")
+}
