@@ -4,7 +4,7 @@ import (
 	"github.com/dghubble/sling"
 )
 
-type gameResult struct {
+type ogsGameResult struct {
 	Next    string `json:"next"`
 	Results []Game `json:"results"`
 }
@@ -30,26 +30,28 @@ func (s *MeService) User() (*User, error) {
 
 // Games fetches all the authenticated user's games.
 func (s *MeService) Games() (*[]Game, error) {
-	allGames := make([]Game, 0)
+	var allGames []Game
 	sling := s.sling.New().Path("me/games")
 
 	for {
-		games := new(gameResult)
-		apiError := new(ogsAPIError)
-		_, err := sling.Get("").Receive(games, apiError)
-
-		if err != nil || apiError.Detail != "" {
-			return nil, handleErrors(err, apiError)
+		games, err := fetchGames(sling)
+		if err != nil {
+			return nil, err
 		}
 
-		for _, game := range games.Results {
-			allGames = append(allGames, game)
-		}
+		allGames = append(allGames, games.Results...)
+		sling = sling.New().Base(games.Next)
 
 		if games.Next == "" {
 			break
 		}
-		sling = sling.New().Base(games.Next)
 	}
 	return &allGames, nil
+}
+
+func fetchGames(sling *sling.Sling) (*ogsGameResult, error) {
+	games := new(ogsGameResult)
+	apiError := new(ogsAPIError)
+	_, err := sling.Receive(games, apiError)
+	return games, handleErrors(err, apiError)
 }
