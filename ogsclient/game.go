@@ -23,7 +23,17 @@ type Players struct {
 	White User `json:"white"`
 }
 
-// HasEnded return true if the game has finished.
+// HasEnded returns true if the game has finished.
 func (game *Game) HasEnded() bool {
 	return game.EndedAt != ""
+}
+
+// HasBlackWon returns true if black has won the game.
+func (game *Game) HasBlackWon() bool {
+	return !game.BlackLost && game.WhiteLost
+}
+
+// HasWhiteWon returns true if white has won the game.
+func (game *Game) HasWhiteWon() bool {
+	return !game.WhiteLost && game.BlackLost
 }
