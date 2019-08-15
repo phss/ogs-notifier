@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
+	"text/tabwriter"
 
 	"github.com/phss/ogs-notifier/pkg/oauth"
 	"github.com/phss/ogs-notifier/pkg/ogsclient"
@@ -38,9 +40,12 @@ func main() {
 
 	fmt.Printf("My ranking is %s\n", user.DisplayRanking())
 	fmt.Println("My current games are:")
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.Debug)
+	fmt.Fprintln(w, "NAME\tBLACK\tWHITE\tLINK\t")
 	for _, game := range *games {
 		if !game.HasEnded() {
-			fmt.Printf("- %s: %s vs %s\n", game.Name, game.Players.Black.Username, game.Players.White.Username)
+			fmt.Fprintf(w, "%s\t%s\t%s\thttps://online-go.com/game/%d\n", game.Name, game.Players.Black.Username, game.Players.White.Username, game.ID)
 		}
 	}
+	w.Flush()
 }
