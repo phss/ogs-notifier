@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/phss/ogs-notifier/ogsclient"
+	"github.com/phss/ogs-notifier/pkg/ogsclient"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/phss/ogs-notifier/oauth"
+	"github.com/phss/ogs-notifier/pkg/oauth"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/oauth2"
 )

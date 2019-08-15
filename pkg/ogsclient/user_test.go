@@ -3,7 +3,7 @@ package ogsclient_test
 import (
 	"testing"
 
-	"github.com/phss/ogs-notifier/ogsclient"
+	"github.com/phss/ogs-notifier/pkg/ogsclient"
 	"github.com/stretchr/testify/assert"
 )
 
