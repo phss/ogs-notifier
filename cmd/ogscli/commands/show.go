@@ -8,22 +8,10 @@ import (
 	"github.com/phss/ogs-notifier/pkg/oauth"
 	"github.com/phss/ogs-notifier/pkg/ogsclient"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-var clientID string
-var clientSecret string
-var username string
-var password string
-
 func init() {
-	showCmd.Flags().StringVar(&clientID, "clientId", "", "")
-	showCmd.Flags().StringVar(&clientSecret, "clientSecret", "", "")
-	showCmd.Flags().StringVar(&username, "username", "", "")
-	showCmd.Flags().StringVar(&password, "password", "", "")
-	showCmd.MarkFlagRequired("clientId")
-	showCmd.MarkFlagRequired("clientSecret")
-	showCmd.MarkFlagRequired("username")
-	showCmd.MarkFlagRequired("password")
 	rootCmd.AddCommand(showCmd)
 }
 
@@ -31,6 +19,11 @@ var showCmd = &cobra.Command{
 	Use:   "show",
 	Short: "Show user's info",
 	Run: func(cmd *cobra.Command, args []string) {
+		clientID := viper.GetString("clientId")
+		clientSecret := viper.GetString("clientSecret")
+		username := viper.GetString("username")
+		password := viper.GetString("password")
+
 		oauthConfig := oauth.Config{
 			TokenURL:     "https://online-go.com/oauth2/token/",
 			ClientID:     clientID,
