@@ -21,15 +21,14 @@ var showCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		clientID := viper.GetString("clientId")
 		clientSecret := viper.GetString("clientSecret")
-		username := viper.GetString("username")
-		password := viper.GetString("password")
+		refreshToken := viper.GetString("refreshToken")
 
 		oauthConfig := oauth.Config{
 			TokenURL:     "https://online-go.com/oauth2/token/",
 			ClientID:     clientID,
 			ClientSecret: clientSecret,
 		}
-		oauthClient, err := oauth.PasswordCredentialsClient(oauthConfig, username, password)
+		oauthClient, err := oauth.RefreshTokenClient(oauthConfig, refreshToken)
 		if err != nil {
 			panic(err)
 		}
