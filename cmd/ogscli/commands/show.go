@@ -33,6 +33,12 @@ var showCmd = &cobra.Command{
 			fmt.Println(err)
 			os.Exit(1)
 		}
+		viper.Set("refreshToken", oauthClient.Token.RefreshToken)
+		err = viper.WriteConfig()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 
 		ogsClient := ogsclient.NewClient(oauthClient.HTTPClient, "http://online-go.com/api/v1/")
 
