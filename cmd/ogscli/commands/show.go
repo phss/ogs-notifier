@@ -30,14 +30,16 @@ var showCmd = &cobra.Command{
 		}
 		oauthClient, err := oauth.RefreshTokenClient(oauthConfig, refreshToken)
 		if err != nil {
-			panic(err)
+			fmt.Println(err)
+			os.Exit(1)
 		}
 
 		ogsClient := ogsclient.NewClient(oauthClient.HTTPClient, "http://online-go.com/api/v1/")
 
 		user, err := ogsClient.Me.User()
 		if err != nil {
-			panic(err)
+			fmt.Println(err)
+			os.Exit(1)
 		}
 		games, err := ogsClient.Me.Games()
 		if err != nil {
