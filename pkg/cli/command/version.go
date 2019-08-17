@@ -1,11 +1,11 @@
-package cli
+package command
 
 import (
 	"github.com/spf13/cobra"
 )
 
 func init() {
-	rootCmd.AddCommand(versionCmd)
+	Root.AddCommand(versionCmd)
 }
 
 var versionCmd = &cobra.Command{

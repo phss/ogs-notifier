@@ -1,9 +1,10 @@
-package cli
+package command_test
 
 import (
 	"bytes"
 	"testing"
 
+	"github.com/phss/ogs-notifier/pkg/cli/command"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,8 +17,8 @@ func TestVersion(t *testing.T) {
 
 func runCommand(args ...string) (output string, err error) {
 	buf := new(bytes.Buffer)
-	rootCmd.SetOutput(buf)
-	rootCmd.SetArgs(args)
-	_, err = rootCmd.ExecuteC()
+	command.Root.SetOutput(buf)
+	command.Root.SetArgs(args)
+	_, err = command.Root.ExecuteC()
 	return buf.String(), err
 }

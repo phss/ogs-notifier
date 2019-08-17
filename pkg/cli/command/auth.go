@@ -1,4 +1,4 @@
-package cli
+package command
 
 import (
 	"bufio"
@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	rootCmd.AddCommand(initCmd)
+	Root.AddCommand(initCmd)
 }
 
 var initCmd = &cobra.Command{
