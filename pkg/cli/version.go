@@ -1,8 +1,6 @@
 package cli
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -14,6 +12,6 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Print the version number of ogscli",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("ogscli v0.1")
+		cmd.Println("ogscli v0.1")
 	},
 }

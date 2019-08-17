@@ -39,10 +39,9 @@ Refresh tokens are short lived and allow the application to use
 the OGS API on behalf of yourself. Everytime you run a command,
 the application will get a new refresh token, invalidating the 
 previous one. It's important to note that this token could 
-potentially be used to do bad things if compromised.
-`)
+potentially be used to do bad things if compromised.`)
 
-		fmt.Print("Are you comfortable with this? [yN]: ")
+		fmt.Print("\nAre you comfortable with this? [yN]: ")
 		answer, _ := reader.ReadString('\n')
 		if strings.TrimSpace(answer) != "y" {
 			os.Exit(0)
