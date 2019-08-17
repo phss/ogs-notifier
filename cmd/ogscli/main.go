@@ -1,7 +1,7 @@
 package main
 
-import "github.com/phss/ogs-notifier/cmd/ogscli/commands"
+import "github.com/phss/ogs-notifier/pkg/cli"
 
 func main() {
-	commands.Execute()
+	cli.Execute()
 }
